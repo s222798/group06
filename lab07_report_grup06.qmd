@@ -11,14 +11,14 @@ editor: visual
 <<<<<<< HEAD
 ## Load libraries
 
-=======
->>>>>>> 53e147d301484f3c12d8e58a4e14f824e1c5a832
+
 ```{r}
 library(tidyverse)
 library(broom)  # devtools::install_github("tidymodels/broom")
 library(cowplot)
 ```
-<<<<<<< HEAD
+
+
 ## Load data
 ```{r}
 raw_dir <- "data/_raw/"
@@ -35,8 +35,7 @@ if( !file.exists(str_c(raw_dir, data_file)) ){
 }
 load(file = str_c(raw_dir, data_file))
 ```
-=======
->>>>>>> 53e147d301484f3c12d8e58a4e14f824e1c5a832
+
 
 
 ```{r}
@@ -121,5 +120,3 @@ pca_fit %>%
   theme_minimal_hgrid(12)
 ```
 
-=======
->>>>>>> 9d85cc3b602a28e4437a27131aa63822a10868fc
