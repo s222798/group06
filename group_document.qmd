@@ -30,6 +30,14 @@ library(tidyverse)
 hola <- 9
 ```
 
+### New feature
+
+```{r}
+library(tidyverse)
+hola <- 9
+adios <- 10
+```
+
 ## s222798
 
 ```{r}
