@@ -26,13 +26,14 @@ Fascinating technology
 ```{r}
 1+1 == 2
 ```
+
 ### New feature
+
 Here is a plot:
+
 ```{r}
 print('No, there is not.')
 ```
-
-
 
 ## s223237
 
