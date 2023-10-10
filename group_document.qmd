@@ -8,6 +8,11 @@ editor: visual
 
 ## s222803
 
+```{r}
+data <- 2*2
+data2 <- data * 2
+```
+
 ## s223196
 
 ## s223237
