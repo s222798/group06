@@ -10,6 +10,12 @@ editor: visual
 
 ## s223196
 
+Fascinating technology
+
+```{r}
+1+1 == 2
+```
+
 ## s223237
 
 ## s222798
