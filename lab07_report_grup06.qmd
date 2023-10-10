@@ -7,18 +7,15 @@ format:
 editor: visual
 ---
 
-<<<<<<< HEAD
 ## Load libraries
-
 
 ```{r}
 library(tidyverse)
 library(broom)  # devtools::install_github("tidymodels/broom")
-#library(cowplot)
 ```
 
-
 ## Load data
+
 ```{r}
 raw_dir <- "data/_raw/"
 data_file <- "gravier.RData"
@@ -35,41 +32,75 @@ if( !file.exists(str_c(raw_dir, data_file)) ){
 load(file = str_c(raw_dir, data_file))
 ```
 
+```{r}
+gravier_clean <- gravier |>
+  bind_cols() |>
+  as_tibble()
+```
 
 ```{r}
-pca_fit <- biopsy %>% 
+# Set the file path and name
+file_path <- "data/02_gravier_clean.tsv.gz"
+
+# Write the data to a gzipped tab-separated-values file
+write.table(gravier_clean, file = file_path, sep = "\t", quote = FALSE, row.names = FALSE)
+
+# Verify that the file was created
+if (file.exists(file_path)) {
+  cat("File '02_gravier_clean.tsv.gz' has been created in the 'data' folder.\n")
+} else {
+  cat("Failed to create the file.\n")
+}
+```
+
+```{r}
+gravier_clean_aug <- gravier_clean |>
+  mutate(y = case_when(y == "poor" ~ 1,
+                       y == "good" ~ 0)) |> 
+  relocate(early_metastasis = y)
+```
+
+```{r}
+# Set the file path and name
+file_path_augmented <- "data/03_gravier_clean_aug.tsv.gz"
+
+# Write the augmented data to a gzipped tab-separated-values file
+write.table(gravier_clean_aug, file = file_path_augmented, sep = "\t", quote = FALSE, row.names = FALSE)
+
+# Verify that the file was created
+if (file.exists(file_path_augmented)) {
+  cat("File '03_gravier_clean_aug.tsv.gz' has been created in the 'data' folder.\n")
+} else {
+  cat("Failed to create the file.\n")
+}
+
+```
+
+```{r}
+pca_fit <- gravier_clean_aug %>% 
   select(where(is.numeric)) %>% # retain only numeric columns
   prcomp(scale = TRUE) # do PCA on scaled data
 ```
 
-
 ```{r}
-pca_fit <- biopsy %>% 
+pca_fit <- gravier_clean_aug %>% 
   select(where(is.numeric)) %>% # retain only numeric columns
   scale() %>% # scale data
   prcomp() # do PCA
 ```
 
-
 ```{r}
 pca_fit %>%
-  augment(biopsy) %>% # add original dataset back in
-  ggplot(aes(.fittedPC1, .fittedPC2, color = outcome)) + 
-  geom_point(size = 1.5) +
-  scale_color_manual(
-    values = c(malignant = "#D55E00", benign = "#0072B2")
-  ) +
-  theme_half_open(12) + background_grid()
+  augment(gravier_clean_aug) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, color = early_metastasis)) + 
+  geom_point(size = 1.5)
 ```
-
-
 
 ```{r}
 # extract rotation matrix
 pca_fit %>%
   tidy(matrix = "rotation")
 ```
-
 
 ```{r}
 # define arrow style for plotting
@@ -90,15 +121,13 @@ pca_fit %>%
   ) +
   xlim(-1.25, .5) + ylim(-.5, 1) +
   coord_fixed() + # fix aspect ratio to 1:1
-  theme_minimal_grid(12)
+  theme_minimal()
 ```
-
 
 ```{r}
 pca_fit %>%
   tidy(matrix = "eigenvalues")
 ```
-
 
 ```{r}
 pca_fit %>%
@@ -110,10 +139,5 @@ pca_fit %>%
     labels = scales::percent_format(),
     expand = expansion(mult = c(0, 0.01))
   ) +
-  theme_minimal_hgrid(12)
-<<<<<<< HEAD
+  theme_minimal()
 ```
-
-=======
-```
->>>>>>> ee73436b664d146c6cf5df858d4955f3066deadc
