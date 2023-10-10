@@ -8,4 +8,8 @@ Top 10 Data Science Languages of ALL Time:
 4. has
 3. different
 2. tastes
+<<<<<<< HEAD
 1. PHP
+=======
+1. R is superiour!
+>>>>>>> b85570b682573386d74e04d45b9161032b019946
