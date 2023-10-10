@@ -8,7 +8,18 @@ editor: visual
 
 ## s222803
 
+```{r}
+data <- 2*2
+data2 <- data * 2
+```
+
 ## s223196
+
+Fascinating technology
+
+```{r}
+1+1 == 2
+```
 
 ## s223237
 
@@ -20,3 +31,7 @@ hola <- 9
 ```
 
 ## s222798
+
+```{r}
+1 + 1
+```
