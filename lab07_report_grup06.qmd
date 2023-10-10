@@ -1,9 +1,12 @@
 ---
 title: "lab07_report_group06"
-author: "all"
-format: html
+author: "Group 06: Laura Casanovas (s222798), Víctor Fiérrez (s223196), Javier Lopez (s223237), Marina Sangés (s223690), Pablo Sánchez-Izquierdo (s222803)"
+format:
+  html:
+    embed-resources: true
 editor: visual
 ---
+<<<<<<< HEAD
 
 ```{r}
 library(tidyverse)
@@ -94,3 +97,5 @@ pca_fit %>%
   theme_minimal_hgrid(12)
 ```
 
+=======
+>>>>>>> 9d85cc3b602a28e4437a27131aa63822a10868fc
