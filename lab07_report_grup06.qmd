@@ -6,7 +6,6 @@ format:
     embed-resources: true
 editor: visual
 ---
-<<<<<<< HEAD
 
 ```{r}
 library(tidyverse)
@@ -96,6 +95,3 @@ pca_fit %>%
   ) +
   theme_minimal_hgrid(12)
 ```
-
-=======
->>>>>>> 9d85cc3b602a28e4437a27131aa63822a10868fc
