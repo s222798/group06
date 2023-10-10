@@ -6,7 +6,6 @@ format:
     embed-resources: true
 editor: visual
 ---
-<<<<<<< HEAD
 
 <<<<<<< HEAD
 ## Load libraries
@@ -118,5 +117,9 @@ pca_fit %>%
     expand = expansion(mult = c(0, 0.01))
   ) +
   theme_minimal_hgrid(12)
+<<<<<<< HEAD
 ```
 
+=======
+```
+>>>>>>> ee73436b664d146c6cf5df858d4955f3066deadc
