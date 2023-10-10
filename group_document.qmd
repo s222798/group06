@@ -8,6 +8,12 @@ editor: visual
 
 ## s222803
 
+New feature
+
+```{r}
+data <- 5
+```
+
 ```{r}
 data <- 2*2
 data2 <- data * 2
@@ -20,6 +26,13 @@ Fascinating technology
 ```{r}
 1+1 == 2
 ```
+### New feature
+Here is a plot:
+```{r}
+print('No, there is not.')
+```
+
+
 
 ## s223237
 
@@ -50,13 +63,20 @@ hola <- 9
 
 -   **Q3:** Discuss in your group why having an organised approach to version control is central? And consider the simple contrast of the challenges you were facing when doing the course assignments.
 
-```{=html}
 <!-- -->
-```
+
 -   **Q4:** Again, find the `ggplot` GitHub site and see if you can find how many branches there are?
 
     71 branches
 
 ```{r}
 1 + 1
+```
+
+### New feature
+
+More things here..
+
+```{r}
+2*2
 ```
