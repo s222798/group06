@@ -14,6 +14,31 @@ editor: visual
 
 ## s222798
 
+-   **T1:** Find the `GitHub` repository for the `ggplot2` R-package
+
+    https://github.com/tidyverse/ggplot2
+
+-   **Q1:** How many Contributors are there?
+
+    295
+
+-   **T1:** Find the `GitHub` repository for the `Linux kernel`
+
+    https://github.com/torvalds/linux
+
+-   **Q2:** How many Contributors are there?
+
+    24643
+
+-   **Q3:** Discuss in your group why having an organised approach to version control is central? And consider the simple contrast of the challenges you were facing when doing the course assignments.
+
+```{=html}
+<!-- -->
+```
+-   **Q4:** Again, find the `ggplot` GitHub site and see if you can find how many branches there are?
+
+    71 branches
+
 ```{r}
 1 + 1
 ```
