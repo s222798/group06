@@ -8,6 +8,12 @@ editor: visual
 
 ## s222803
 
+New feature
+
+```{r}
+data <- 5
+```
+
 ```{r}
 data <- 2*2
 data2 <- data * 2
