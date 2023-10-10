@@ -12,4 +12,11 @@ editor: visual
 
 ## s223237
 
+Hola
+
+```{r}
+library(tidyverse)
+hola <- 9
+```
+
 ## s222798
