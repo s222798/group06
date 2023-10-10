@@ -1,0 +1,18 @@
+---
+title: "s222803"
+format: html
+editor: visual
+---
+
+```{r}
+usethis::use_git_config(user.name = "pablosanchezizquierdo", user.email = "sanizbe.pablo@gmail.com")
+```
+
+```{r}
+usethis::create_github_token()
+```
+```{r}
+gitcreds::gitcreds_set()
+```
+
+
