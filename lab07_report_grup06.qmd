@@ -14,7 +14,7 @@ editor: visual
 ```{r}
 library(tidyverse)
 library(broom)  # devtools::install_github("tidymodels/broom")
-library(cowplot)
+#library(cowplot)
 ```
 
 
@@ -33,12 +33,6 @@ if( !file.exists(str_c(raw_dir, data_file)) ){
     destfile = str_c(raw_dir, data_file))
 }
 load(file = str_c(raw_dir, data_file))
-```
-
-
-
-```{r}
-biopsy <- read_csv("https://wilkelab.org/classes/SDS348/data_sets/biopsy.csv")
 ```
 
 
