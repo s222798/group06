@@ -50,13 +50,20 @@ hola <- 9
 
 -   **Q3:** Discuss in your group why having an organised approach to version control is central? And consider the simple contrast of the challenges you were facing when doing the course assignments.
 
-```{=html}
 <!-- -->
-```
+
 -   **Q4:** Again, find the `ggplot` GitHub site and see if you can find how many branches there are?
 
     71 branches
 
 ```{r}
 1 + 1
+```
+
+### New feature
+
+More things here..
+
+```{r}
+2*2
 ```
