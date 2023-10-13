@@ -1,0 +1,199 @@
+---
+title: "Report lab 07 Group 06"
+author: "Group 06: Laura Casanovas (s222798), Víctor Fiérrez (s223196), Javier Lopez (s223237), Marina Sangés (s223690), Pablo Sánchez-Izquierdo (s222803)"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+# Report Week 6
+
+## 1. Background
+
+Gravier et al. (2010) have considered small, invasive ductal carcinomas without axillary lymph node involvement (T1T2N0) to predict metastasis of small node-negative breast carcinoma. Using comparative genomic hybridization arrays, they examined 168 patients over a five-year period. The 111 patients with no event after diagnosis were labelled good, and the 57 patients with early metastasis were labelled poor.
+
+## 2. Aim
+
+The aim of this project is to do a PCA analysis on the Gravier dataset.
+
+## 3. Library Requirements
+
+```{r}
+library("tidyverse")
+library("broom")  # devtools::install_github("tidymodels/broom")
+library("readr")
+```
+
+## 4. Data Loading and Cleaning
+
+### 4.1 Load data
+
+```{r}
+raw_dir <- "data/_raw/"
+data_file <- "gravier.RData"
+data_loc <- "https://github.com/ramhiser/datamicroarray/raw/master/data/"
+
+if( !dir.exists(raw_dir) ){
+  dir.create(path = raw_dir)
+}
+if( !file.exists(str_c(raw_dir, data_file)) ){
+  download.file(
+    url = str_c(data_loc, data_file),
+    destfile = str_c(raw_dir, data_file))
+}
+load(file = str_c(raw_dir, data_file))
+```
+
+### 4.2 Clean data
+
+```{r}
+gravier_clean <- gravier |>
+  bind_cols() |>
+  as_tibble()
+```
+
+Now we create a tab-separated-values gzipped file called “02_gravier_clean” into our “data”-folder.
+
+```{r}
+# Set the file path and name
+file_path <- "data/02_gravier_clean.tsv.gz"
+
+# Write the data to a gzipped tab-separated-values file
+write_tsv(gravier_clean, file = file_path)
+
+# Verify that the file was created
+if (file.exists(file_path)) {
+  cat("File '02_gravier_clean.tsv.gz' has been created in the 'data' folder.\n")
+} else {
+  cat("Failed to create the file.\n")
+}
+```
+
+### 4.3 Augment data
+
+```{r}
+gravier_clean_aug <- gravier_clean |>
+  mutate(y = case_when(y == "poor" ~ 1,
+                       y == "good" ~ 0)) |> 
+  relocate(early_metastasis = y)
+```
+
+Now we write a tab-separated-values gzipped file called “03_gravier_clean_aug” into our “data”-folder
+
+```{r}
+# Set the file path and name
+file_path_augmented <- "data/03_gravier_clean_aug.tsv.gz"
+
+# Write the augmented data to a gzipped tab-separated-values file
+write_tsv(gravier_clean_aug, file = file_path_augmented)
+
+# Verify that the file was created
+if (file.exists(file_path_augmented)) {
+  cat("File '03_gravier_clean_aug.tsv.gz' has been created in the 'data' folder.\n")
+} else {
+  cat("Failed to create the file.\n")
+}
+
+```
+
+## 5 PCA analysis
+
+### 5.1 Start PCA
+
+Do a PCA analysis on the gravier_clean_aug dataset using prcomp function. We need to select only columns that contain numbers (avoid early_metastasis column) and scale the values (substract the mean and divide by the standard deviation to get mean 0 and std dev 1)
+
+```{r}
+pca_fit <- gravier_clean_aug |> 
+  select(where(is.numeric)) |> # retain only numeric columns
+  prcomp(scale = TRUE) # do PCA on scaled data
+```
+
+### 5.2 Plot observations in PC coordinates
+
+Before plotting the data, we create a new dataset joining the original gravier_clean_aug dataset and columns containg PC coordinates using augment funciton. Then, observations are plot in the coordinates of the first two PC. Observations are also labeled using the early_metastasis categorical value. 
+
+```{r}
+pca_fit |>
+  augment(gravier_clean_aug) |> 
+  ggplot(aes(.fittedPC1, .fittedPC2, color = factor(early_metastasis))) + 
+  scale_color_manual(
+    values = c("#D55E00", "#0072B2"), labels = c("good", "poor"), name = "Early Metastasis"
+  )+
+  geom_point(size = 1.5) +
+  labs(
+    title = "Observations in PC coordinates",
+    x = 'PC2', y = 'PC1'
+  )
+```
+
+### 5.3 Plot gene loadings in PC coordinates
+
+Create the variable "arrow_style" which is used afterwards in the plot to plot the arrows.
+
+```{r}
+# define arrow style for plotting
+arrow_style <- arrow(
+  angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt")
+)
+```
+
+Before plotting gene loadings some rearrangements need to be done. First, rotation matrix is extracted using tidy function (rotation matrix contains gene loadings for each PC). Then, rotation matrix is pivoted from long dataset (each gene is displayed in 168 rows that contain 168 loadings from the 168 PC and all PC are displayed in the same column) to wide dataset (each gene is only displayed in one row that contain each PC loading in a different column). Afterwards, we select randomly 5 genes.
+
+```{r}
+loadings_matrix <- pca_fit |>
+  tidy(matrix = "rotation") |>
+  pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value")
+  
+loadings_matrix_random <- loadings_matrix |>
+  sample_n(size = 5)
+```
+
+Finally, the gene loadings from the first two components are plot using ggplot and the "arrow_style" variable created before. 
+
+```{r}
+loadings_matrix_random |>
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, yend = 0, arrow = arrow_style) +
+  geom_text(
+    aes(label = column), size = 3,
+    color = "black", nudge_y = -0.005, nudge_x = +0.005
+  ) +
+  xlim(-0.1, 0.1) + ylim(-0.05, +0.05) +
+  coord_fixed() + # fix aspect ratio to 1:1
+  labs(
+    title = "Gene loadings in PC1 and PC2",
+    x = 'PC2', y = 'PC1'
+  ) +
+  theme_minimal()
+```
+
+
+### 5.4 Variance plot
+
+Finally, we want to create a bar plot that shows the percentage of variance explained by each PC. To do this, first we need to extract the eigenvalues matrix using tidy function again.
+
+```{r}
+eigen_mat <- pca_fit |>
+  tidy(matrix = "eigenvalues") |>
+  filter(PC <= 10)
+```
+
+Using this matrix, we can create the bar plot.
+
+```{r}
+eigen_mat |>
+  ggplot(aes(PC, percent)) +
+  geom_col(fill = "#56B4E9", alpha = 0.8) +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) +
+  labs(
+    title = "Variance explained by PC",
+    x = 'PC', y = 'Percentage'
+  ) +
+  theme_minimal()
+```
+
